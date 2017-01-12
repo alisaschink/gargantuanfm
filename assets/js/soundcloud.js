@@ -5,7 +5,9 @@ $(document).ready(function(){
   var query = '';
   var trackList = [];
   var song = document.querySelector('audio');
-  console.log(song);
+  var channelNameCheck = [];
+  
+
 
   $(document).on('click','.search-submit', function(e){
     e.preventDefault();
@@ -32,17 +34,17 @@ $(document).ready(function(){
   function addTrack() {
     SC.get('/tracks/' + track).then(function(player){
       
-      console.log(track);
       trackList.push({
         id : player.id,
         trackName : player.title,
         url : player.stream_url,
         artist : player.user.username
       });
+
       if (trackList.length === 1) {
         $('.picked-songs').empty();
       }
-      $('.picked-songs').append('<li class="column column-block"><button class="button small success picked-song" data-value="' + player.id + '">'+ player.title + '</button></li>');
+      $('.picked-songs').append('<li class="column column-block"><button class="button small picked-song" data-value="' + player.id + '">'+ player.title + '</button></li>');
     })
     $('#songName').attr('placeholder','Search for another song or artist!')
   };
@@ -66,7 +68,7 @@ $(document).ready(function(){
     var channelName = $('#channel-name').val().trim();
 
     // Make sure user enters both a channel name and tracklist
-    if (channelName != '' && channelName != $('.channelButton').find(channelName).html() && trackList.length > 0) {
+    if (channelName != '' && jQuery.inArray(channelName, channelNameCheck) === -1 && trackList.length > 0 ) {
       dataRef.ref().child('channels').push({
         channelName : channelName,
         tracks : trackList
@@ -118,11 +120,11 @@ $(document).ready(function(){
   $(".show-button").on("click", function() {
     if ($('.show-button').html() === "Close Player"){
       $('.show-button').html('Open Player');
-      $('.display-buttons').animate({bottom: '1vh'}, 'fast')
+      $('.display-buttons').animate({bottom: '1.2vh'}, 'fast')
     }
     else if ($('.show-button').html() === "Open Player") {
       $('.show-button').html('Close Player');
-      $('.display-buttons').animate({bottom: '15vh'}, 'fast')
+      $('.display-buttons').animate({bottom: '20vh'}, 'fast')
     }
   });
 
