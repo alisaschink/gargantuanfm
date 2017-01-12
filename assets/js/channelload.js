@@ -22,7 +22,7 @@
     $('.show-button').html('Close Player');
     $('.logo').addClass('logo-small');
     $('.track-player').addClass('is-open');
-    $('.display-buttons').animate({bottom: '15vh'}, 'fast')
+    $('.display-buttons').animate({bottom: '15vh'}, 'fast');
     channelId = $(this).data('channel').trim();
     playlistName = "";
     artists = [];
@@ -45,7 +45,7 @@
       console.log(tracks);
 
 
-      //pushes streaming urls into an array
+      // Pushes streaming urls into an array
       for(var i = 0; i < tracks.length; i++){
         artists.push(tracks[i].artist + ' - ' + tracks[i].trackName);
         playlist.push(tracks[i].url);
@@ -53,7 +53,7 @@
 
       console.log(playlist);
 
-      //use html5 audio to play tracks
+      // Use html5 audio to play tracks
       function playTracks(){
 
         var trackUrl = playlist[trackNumber];
@@ -62,6 +62,7 @@
         $('.playlist-info').html('NOW PLAYING: '+ playlistName);
         $(document).prop('title', playlistName + ' // Gargantuan.FM')
         $('#play-pause').removeClass('fi-play').addClass('fi-pause');
+        // When playlist is over, it restarts
         if (trackNumber < playlist.length) {
 
           $('audio').attr("src", trackUrl + "?client_id=8761e61199b55df39ee27a92f2771aeb");
@@ -79,10 +80,11 @@
       playTracks();
 
         
-      //function to play previous song
+      // Function to play previous song
       function prevSong(){
         if (trackNumber > 0){
           trackNumber--;
+          console.log(trackNumber);
           setTimeout(playTracks,1000);
         } else{
           replay();
@@ -90,27 +92,28 @@
       };
    
 
-      //function to play next song
+      // Function to play next song
       function nextSong(){
         audio.pause();
         trackNumber++;
+        console.log(trackNumber);
         setTimeout(playTracks,1000);
       };
 
 
-      //replays playlist
+      // Replays playlist
       function replay() {
         audio.pause();
         trackNumber = 0;
         setTimeout(playTracks,1000);
       };
 
-      //plays previous track when prevButton clicked
+      // Plays previous track when prevButton clicked
       $(document).on('click','#prevButton', function(){
         setTimeout(prevSong, 1500);
       });
 
-      //plays next track when skipButton clicked
+      // Plays next track when skipButton clicked
       $(document).on('click','#skipButton', function(){
         setTimeout(nextSong, 1500);
       });
