@@ -24,7 +24,8 @@ audio {
     margin: 5px;
 }
 
-video {
+video,
+#backgroundVideo {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -113,8 +114,7 @@ a:focus {
     margin: 0;
 }
 
-.gargantuan-btn,
-.soundcloud-btn {
+.gargantuan-btn {
     background: url(../images/brush.png) no-repeat;
     -webkit-filter: drop-shadow(0px 0px 10px #FF00FF);
     filter: drop-shadow(0px 0px 10px #FF00FF);
@@ -131,8 +131,25 @@ a:focus {
     transition-property: all;
 }
 
+.sc-auth {
+    font-size: 15px;
+    background: url(../images/soundcloud_logo.svg) no-repeat;
+    -webkit-filter: drop-shadow(0px 0px 10px #ff7700);
+    filter: drop-shadow(0px 0px 10px #ff7700);
+    display: inline-block;
+    margin: 20px 0;
+    padding: 28px;
+    color: white;
+    background-size: contain;
+    background-position: center;
+    font-weight: 700;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out;
+    transition-property: all;
+}
+
 .gargantuan-btn:hover,
-.soundcloud-btn:hover {
+.sc-auth:hover {
     transform: rotate(10deg);
 }
 
@@ -294,6 +311,14 @@ a:focus {
     background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, .9) 100%);
     background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, .9) 100%);
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, .9) 100%);
+}
+
+.plyr {
+    position: fixed !important;
+}
+
+.plyr__video-embed iframe {
+    position: fixed !important;
 }
 
 @media screen and (max-device-width: 736px) {

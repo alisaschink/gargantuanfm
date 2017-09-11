@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="assets/css/foundation.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="assets/foundation-icons/foundation-icons.css">
-    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="https://cdn.plyr.io/2.0.13/plyr.css">    
     <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
     <script src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <script src="assets/audiojs/audio.min.js" />
+
     <script>
-        audiojs.events.ready(function() {
+        audiojs.events.ready(function () {
             var as = audiojs.createAll();
         });
     </script>
@@ -26,17 +27,22 @@
 
 </head>
 
-<body>
+<body style="background: url('assets/images/static.gif') no-repeat cover">
     <div id="gradient"></div>
-    <video id="backgroundVideo" poster="assets/images/static.gif" playsinline autoplay muted>
-      <source type="video/mp4">
+    <!-- <video id="backgroundVideo" poster="assets/images/static.gif" playsinline autoplay muted>
+        <source type="file" accept="video/*">
     </video>
+    <iframe type="text/html" id="videoPlayer" style="width: 100vh; height: 100vh" src="" frameborder="0">
+    </iframe> -->
+    <div data-type="youtube" data-video-id="Vdb9IndsSXk" id="backgroundVideo" class="js-player"></div>
+    
 
     <div class="main-body">
         <div class="row logo">
             <div class="small-12 medium-8 small-centered columns text-center">
                 <img class="title" src="assets/images/gargantuan_logo.png" alt="gargantuan logo" />
                 <button class="gargantuan-btn" data-toggle="channel-modal">Add A Channel</button>
+                <button class="gargantuan-btn sc-auth">Log Into SoundCloud</button>
 
                 <div class="reveal small text-center" id="channel-modal" data-reveal data-close-on-click="false" data-animation-in="scale-in-up">
                     <h1>Create A Channel</h1>
@@ -96,6 +102,7 @@
                 <button class="button small channel-toggle" type="button" data-toggle="channel-menu" data-options="align:top">Change The Video Channel</button>
                 <div class="dropdown-pane top" id="channel-menu" data-dropdown></div>
                 <button class="button small" id="nextVideo">Skip Video</button>
+                <button class="button small" id="muteVideo">Mute Video</button>
             </div>
         </div>
 
@@ -139,14 +146,16 @@
         };
         firebase.initializeApp(config);
         var dataRef = firebase.database();
-
-
         SC.initialize({
-            client_id: '8761e61199b55df39ee27a92f2771aeb',
+            client_id: 'VPeJNS9J8fyQ9gFSZs69JZgH4PLgsPK5',
+            redirect_uri: 'https://gargantuanfm.herokuapp.com/callback.html'
         });
     </script>
 
     <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script src="https://cdn.plyr.io/2.0.13/plyr.js"></script>
+    
+    <!-- Include the jQuery Mobile library -->
     <script src="assets/js/api.js"></script>
     <script src="assets/js/youtube.js"></script>
     <script src="assets/js/vendor/what-input.js"></script>

@@ -152,8 +152,10 @@ $(document).ready(function() {
         timeout = setTimeout(function() {
             $('.main-body').fadeOut('slow');
             $('#gradient').fadeOut('slow');
-        }, 4000);
+        }, 10000);
     });
+
+
 
 
 });

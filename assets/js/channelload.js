@@ -7,6 +7,37 @@ $(document).ready(function() {
     var trackNumber;
     var playlistName;
     var audio = document.querySelector('audio');
+    var scUserId;
+    var scPlaylistId;
+    var scPlaylistArr = [];
+    var scPlaylist = function(id, name, tracks) {
+        this.id = id;
+        this.name = name;
+        this.tracks = tracks;
+    }
+
+    $(document).on('click', '.sc-auth', function() {
+        // initiate auth popup
+        SC.connect().then(function() {
+            return SC.get('/me');
+        }).then(function(me) {
+            $('.sc-auth').html("Welcome " + me.username + "!");
+            loadSCPlaylists(me.id);
+        });
+
+    });
+
+    function loadSCPlaylists(id) {
+        SC.get('/users/' + id + '/playlists').then(function(playlists) {
+            for (var i = 0; i < playlists.length; i++) {
+                var playlist = new scPlaylist(playlists[i].id, playlists[i].title, playlists[i].tracks);
+                scPlaylistArr.push(playlist);
+                $('.channelList').prepend('<div class="column column-block channelButton" data-equalizer-watch data-source="SC" data-channel="' + i + '">' + scPlaylistArr[i].name + '</div>');
+            }
+
+        });
+    }
+
 
     dataRef.ref('channels').on('child_added', function(childSnapshot) {
         // console.log(childSnapshot.val());
@@ -23,14 +54,18 @@ $(document).ready(function() {
         $('.show-button').html('Close Player');
         $('.logo').addClass('logo-small');
         $('.track-player').addClass('is-open');
-        channelId = $(this).data('channel').trim();
         playlistName = "";
+
         artists = [];
         playlist = [];
         trackNumber = 0;
-        console.log(trackNumber);
-        console.log(channelId);
-        loadChannel();
+        if ($(this).data('source') == "SC") {
+            scPlaylistId = $(this).data('channel');
+            loadSCChannel();
+        } else {
+            channelId = $(this).data('channel').trim();
+            loadChannel();
+        }
 
     });
 
@@ -43,8 +78,8 @@ $(document).ready(function() {
         $(document).prop('title', playlistName + ' // Gargantuan.FM')
         $('#play-pause').removeClass('fi-play').addClass('fi-pause');
         if (trackNumber < playlist.length) {
-
-            $('audio').attr("src", trackUrl + "?client_id=8761e61199b55df39ee27a92f2771aeb");
+            console.log(trackUrl)
+            $('audio').attr("src", trackUrl + "?client_id=VPeJNS9J8fyQ9gFSZs69JZgH4PLgsPK5");
             setTimeout(function() {
                 if ($('audio').get(0).paused) {
                     $('audio').get(0).play();
@@ -61,7 +96,7 @@ $(document).ready(function() {
         }
     };
 
-    audio.addEventListener('error',nextSong);
+    audio.addEventListener('error', nextSong);
 
     //function to play previous song
     function prevSong() {
@@ -96,18 +131,18 @@ $(document).ready(function() {
 
     //function to play next song
     function nextSong() {
-      trackNumber++;
-      playTracks();
+        trackNumber++;
+        playTracks();
     };
 
     $(document).keyup(function(e) {
-      console.log(e);
-      if (e.keyCode === 39) { 
-        nextSong();
-      }
-     if (e.keyCode === 37) {
-        prevSong();
-     }
+        console.log(e);
+        if (e.keyCode === 39) {
+            nextSong();
+        }
+        if (e.keyCode === 37) {
+            prevSong();
+        }
     })
 
     // Pulls the selected channel's info and passes it into our audio element 
@@ -127,5 +162,20 @@ $(document).ready(function() {
             //use html5 audio to play tracks
             playTracks();
         })
+    };
+
+    function loadSCChannel() {
+        var selectedSCPlaylist = scPlaylistArr[scPlaylistId];
+        //pulls selected channel's tracks 
+
+        //pushes streaming urls into an array
+        for (var i = 0; i < selectedSCPlaylist.tracks.length; i++) {
+            artists.push(selectedSCPlaylist.tracks[i].user.username + ' - ' + selectedSCPlaylist.tracks[i].title);
+            playlist.push(selectedSCPlaylist.tracks[i].stream_url);
+        };
+
+        //use html5 audio to play tracks
+        playTracks();
+
     };
 });
